@@ -58,6 +58,84 @@ This section summarizes the key features of Times Square that affect the user ex
 
 - At its root URL, ``/<root>/``, |TS| displays an index of available notebooks.
 
+Service architecture
+====================
+
+|TS| consists of a user-facing web front-end application along with back-end API and service.
+These are both deployed as a single Phalanx service to the Rubin Science Platform.
+
+.. diagrams:: architecture.py
+
+
+.. _times-square-ui:
+
+times-square-ui
+---------------
+
+The UI is developed as a Next.js React application, following SQuaRE's standard practice for a web application that has both server- and client-side code.
+The UI is deployed as a Kubernetes deployment.
+
+The UI application's server-side codebase is relatively simple, restricted primarily to dynamically configuring the UI at runtime for a given Rubin Science .
+
+The UI has essentially type types of endpoints.
+At the root endpoint, ``/root/``, the UI displays a listing of available notebook pages based on data from the :ref:`API service <times-square-api>`.
+
+The notebook pages have endpoints ``/<root>/<notebook slug>``.
+The interface for these pages consist of an outer page wrapper, and an ``iframe`` consisting of the rendered HTML.
+Rendering the notebook inside an ``iframe`` provides a number of advantages:
+
+- Since the ``iframe`` content is provided by an API service endpoint, Jupyter notebook rendering remains in a Python language service and thus the React front-end doesn't need to render ``ipynb`` files, which can sometimes be challenging (see GitHub's ``ipynb`` preview issues).
+- The outer page wrapper can be rendered quickly, even if the notebook itself is still being rendered.
+  This provides a better user experience than a delayed page load.
+- Changing the notebook parameters, and therefore fetching a new rendering of the notebook, does not result in a full page reload since only the ``src`` attribute on the ``iframe`` changes, again providing a smoother user experience.
+
+Similar to the ``iframe``, data for the outer page wrapper, including title and controls for changing notebook parameters, comes from the :ref:`API service <times-square-api>` as well, though that data is rendered through React components onto the page.
+
+.. _times-square-api:
+
+times-square-api
+----------------
+
+The API is developed as a FastAPI Python application, following SQuaRE's standard practice for web services.
+The API service is generally responsible for the notebook domain:
+
+- maintaining a registry of notebooks
+- syncing notebooks from their source repositories
+- rendering templated notebooks and executing notebooks with Noteburst
+- providing rendered notebooks to the :ref:`front-end service <times-square-ui>`
+
+The API service uses three external datastores: one or more GitHub repositories, a SQL database, and a Redis database.
+
+The GitHub repositories are the ultimate sources for notebooks.
+Authors commit Jupyter Notebooks alongside metadata files into GitHub repositories.
+By registering as a GitHub App that is installed specifically into these source repositories, the times-square-api app can receive webook events whenever these notebooks are updated, and read the contents of updated notebooks even if the source repository is private.
+SQuaRE's Semaphore notification services uses a similar pattern for sourcing broadcast messages from GitHub (:sqr:`060`).
+
+The SQL database stores the source notebooks, along with metadata from the sidecar metadata file.
+This data is updated through the GitHub App webhook events.
+To create a new "page" model row in the SQL database, an API user needs to specifically register the notebook and its source location in a GitHub repository.
+Part of this registration process is to claim the unique slug that the notebook will be served at.
+
+The Redis database stores the products of notebook execution (both the rendered HTML and executed ``ipynb`` file).
+These entries are keyed with a hash of the notebook slug, version, and parameters to ensure a unique and consistent cache look-up.
+To cache database bloat, entries in Redis have a finite TTL so that they naturally expire from the database as the source notebook is updated or certain parameterizations become unused (e.g., a date in the past for a nightly dashboard).
+
+When the API service receives a request for a notebook page, it first queries the Redis database.
+If the executed notebook HTML and ``ipynb`` are not cached in Redis, the API service gets the current version of the notebook template from the SQL database, executes it via the Noteburst service, renders and returns the notebook HTML to the requester, and caches that notebook into Redis.
+
+Summary of interfaces with other services
+-----------------------------------------
+
+- The Noteburst service is responsible for executing the ``ipynb`` file.
+  |TS| is responsible for preparing the ``ipynb`` file for Noteburst (rendering Jinja templating) and converting the executed Notebook into HTML.
+  Note that Noteburst further delegates notebook execution to JupyterLab itself.
+
+  When |TS| executes a notebook through Noteburst, it is responsible for specifying a JupyterLab user account (username and UID), or potentially a pool of users, to execute the notebooks with.
+  Notebooks are not executed through normal user accounts (for example, the account of the notebook's author).
+  Ideally, Noteburst can maintain a running pool of JupyterLab pods, and route requests to those pods.
+
+- Gafaelfawr provides authentication and authorization for both the web front-end and the API services.
+
 .. Add content here.
 .. Do not include the document title (it's automatically added from metadata.yaml).
 
