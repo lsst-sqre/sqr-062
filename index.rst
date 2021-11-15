@@ -13,6 +13,28 @@ Viewers of the notebook can select values for these parameters to view a noteboo
 Times Square is intended to be used for publishing live dashboards and reports of observatory operations and data processing activities.
 This technical note covers the concept and design of Times Square.
 
+The key functionality of Times Square
+=====================================
+
+This section summarizes the key features of Times Square that affect the user experience:
+
+- |TS| maintains a database of Jupyter Notebooks.
+  These notebooks can be stored as ``ipynb`` files in a GitHub repository along with a sidecar YAML file that provides metadata (e.g. title and description) along with the schema for the parameterized variables.
+
+- Jupyter Notebooks are *parameterized* with Jinja_ templating syntax.
+  Both text and code cells can be templated so that either the prose or the computed results of the notebook are generated dynamically.
+
+- Each notebook is published to the web as its own path: ``/<root>/<notebook slug>``.
+  When a user visits a page's URL, |TS| returns an HTML rendering of the executed notebook.
+  By requesting the bare path, the user sees a notebook rendered from default parameters.
+  However, the user can also add a query string to the URL to see the notebook rendered with those parameters, e.g. ``/<root>/<notebook slug>?myvar=42&greeting=hello+world``.
+
+- For users in a web browser, |TS| provides a wrapper around the HTML-rendered notebook.
+  This wrapper provides a form interface for selecting notebook parameters, along with basic metadata and navigation elements.
+  The interface also provides a link for downloading the ipynb file for further editing beyond the scope of the parameterization.
+
+- At its root URL, ``/<root>/``, |TS| displays an index of available notebooks.
+
 .. Add content here.
 .. Do not include the document title (it's automatically added from metadata.yaml).
 

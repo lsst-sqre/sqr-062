@@ -20,3 +20,10 @@ g.update(confs)
 # Example:
 #
 #     intersphinx_mapping['python'] = ('https://docs.python.org/3', None)
+
+rst_epilog = """
+
+.. |TS| replace:: Times Square
+
+.. _Jinja: https://jinja.palletsprojects.com/en/3.0.x/
+"""
