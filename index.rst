@@ -136,8 +136,48 @@ Summary of interfaces with other services
 
 - Gafaelfawr provides authentication and authorization for both the web front-end and the API services.
 
-.. Add content here.
-.. Do not include the document title (it's automatically added from metadata.yaml).
+.. _api:
+
+The Times Square RESTful API
+============================
+
+This section is an overview of the core RESTful API endpoints provided by the :ref:`API service <times-square-api>`.
+These endpoints are used both by the front-end and any administrative API users.
+
+``GET /v1/repositories``
+    Iterates over the GitHub repositories that the Times Square GitHub app is installed in, and summarizes the potential notebook pages found in each repository.
+
+``GET /v1/repositories/:org/:name``
+    Get notebook pages published from a specific repository.
+
+``GET /v1/pages``
+    Iterates over all registered pages and includes metadata about the page.
+    This endpoint can be used for the homepage UI.
+
+``POST /v1/pages``
+    Registers a new notebook page, corresponding to a template notebook found with the ``GET /v1/repositories`` endpoint.
+
+``GET /v1/pages/:slug``
+    Get the notebook page's resource (primarily the notebook's metadata; use the ``GET /v1/pages/:slug/source`` endpoint to get the ipynb file).
+
+``PATCH /v1/pages/:slug``
+    Update the notebook page's resource.
+
+``DELETE /v1/pages/:slug``
+    Delete a notebook page.
+
+``GET /v1/pages/:slug/source``
+    Get the source ``ipynb`` notebook for a page (not the executed notebook).
+
+``GET /v1/pages/:slug/html(?<parameters>)``
+    Get a rendered notebook HTML computed for either the default parameters (if no query string is provided) or specific parameters (if a query string is provided).
+    If the computed notebook is available from the Redis cache, that version is provided.
+    Otherwise this endpoint triggers a computation via Noteburst.
+
+``GET /v1/pages/:slug/rendered(?<parameters>)``
+    Get a rendered ipynb notebook computed for either the default parameters (if no query string is provided) or specific parameters (if a query string is provided).
+    If the computed notebook is available from the Redis cache, that version is provided.
+    Otherwise this endpoint triggers a computation via Noteburst.
 
 .. .. rubric:: References
 
