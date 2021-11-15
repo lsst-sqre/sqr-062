@@ -2,7 +2,7 @@
 
 @DocuShare{SQR-062,
    author = { Jonathan Sick },
-    title = {The Noteburst service for publishing parameterized Jupyter Notebooks in the Rubin Science platform},
+    title = {The Times Square service for publishing parameterized Jupyter Notebooks in the Rubin Science platform},
      year = 2021,
     month = Sep,
    handle = {SQR-062},

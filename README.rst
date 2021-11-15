@@ -7,14 +7,18 @@
   .. image:: https://zenodo.org/badge/doi/10.5281/zenodo.#####.svg
      :target: http://dx.doi.org/10.5281/zenodo.#####
 
-##################################################################################################
-The Noteburst service for publishing parameterized Jupyter Notebooks in the Rubin Science platform
-##################################################################################################
+#####################################################################################################
+The Times Square service for publishing parameterized Jupyter Notebooks in the Rubin Science platform
+#####################################################################################################
 
 SQR-062
 =======
 
-The Noteburst service publishes Jupyter Notebooks as webpages within the Rubin Science Platform (though outside JupyterLab). Authors of notebooks can parameterize text and code within the notebook's source. Viewers of the notebook can select values for these parameters to view a notebook rendered on-demand. Noteburst is intended to be used for publishing live dashboards and reports of observatory operations and data processing activities. This technical note covers the concept and design of Noteburst.
+The Times Square service publishes Jupyter Notebooks as webpages within the Rubin Science Platform (though outside JupyterLab).
+Authors of notebooks can parameterize text and code within the notebook's source.
+Viewers of the notebook can select values for these parameters to view a notebook rendered on-demand in conjunction with the Noteburst notebook service.
+Times Square is intended to be used for publishing live dashboards and reports of observatory operations and data processing activities.
+This technical note covers the concept and design of Times Square.
 
 **Links:**
 

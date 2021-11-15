@@ -13,7 +13,7 @@ serial_number: "062"
 doc_id: "SQR-062"
 
 # Title of the document, without the series/serial designation
-doc_title: "The Noteburst service for publishing parameterized Jupyter Notebooks in the Rubin Science platform"
+doc_title: "The Times Square service for publishing parameterized Jupyter Notebooks in the Rubin Science platform"
 
 # Author names, ordered as a list. Each author name should be formatted as 'First Last'
 authors:
@@ -37,7 +37,12 @@ authors:
 copyright: "2021, Association of Universities for Research in Astronomy, Inc. (AURA)"
 
 # Description. A short, 1-2 sentence statemement used by document indices.
-description: "The Noteburst service publishes Jupyter Notebooks as webpages within the Rubin Science Platform (though outside JupyterLab). Authors of notebooks can parameterize text and code within the notebook's source. Viewers of the notebook can select values for these parameters to view a notebook rendered on-demand. Noteburst is intended to be used for publishing live dashboards and reports of observatory operations and data processing activities. This technical note covers the concept and design of Noteburst."
+description: >
+  The Times Square service publishes Jupyter Notebooks as webpages within the Rubin Science Platform (though outside JupyterLab).
+  Authors of notebooks can parameterize text and code within the notebook's source.
+  Viewers of the notebook can select values for these parameters to view a notebook rendered on-demand in conjunction with the Noteburst notebook service.
+  Times Square is intended to be used for publishing live dashboards and reports of observatory operations and data processing activities.
+  This technical note covers the concept and design of Times Square.
 
 # Abstract, if available
 # abstract: >
