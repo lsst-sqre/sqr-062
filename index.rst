@@ -13,6 +13,29 @@ Viewers of the notebook can select values for these parameters to view a noteboo
 Times Square is intended to be used for publishing live dashboards and reports of observatory operations and data processing activities.
 This technical note covers the concept and design of Times Square.
 
+Use cases for Times Square
+==========================
+
+Jupyter Notebooks are effective for documenting an analysis or data reduction by combining prose, code, and graphical outputs.
+Editing a notebook is intuitive for a large number of people at Rubin Observatory, including engineerings and scientists.
+The Nublado (JupyterLab) service in the Rubin Science Platform makes its very easy to edit and execute by providing a web-based experience that doesn't require any local software or data installation.
+
+Sharing a notebook with colleagues is certainly possible, though not streamlined.
+Consider this sequence of steps required for viewing a notebook shared by a colleague:
+
+1. Spawn a JupyterLab pod.
+2. Either download the notebook from GitHub or find the notebook in a shared directory.
+3. Open an execute the notebook.
+
+This operation can take a few minutes.
+
+The idea behind |TS| is to accelerate the process of viewing a shared notebook into a single, fast operation: opening a URL in a web browser.
+With this speed and simplicity, |TS| can support a range of dashboarding applications, such as plotting key statistics from a recent observing run.
+
+To support a limited degree of customization, notebooks can be parameterized.
+This would allow a viewer to, for example, set the bounds on a database query.
+If a viewer needs more customization, they can always download the notebook into their own JupyterLab session for a fully interactive computing experience.
+
 The key functionality of Times Square
 =====================================
 
