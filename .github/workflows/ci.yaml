@@ -12,6 +12,11 @@ jobs:
           fetch-depth: 0 # full history for metadata
           submodules: true
 
+      - name: Install graphviz
+        run: |
+          apt-get update
+          apt-get install -y graphviz
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
