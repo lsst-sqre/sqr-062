@@ -1,10 +1,4 @@
-from documenteer.conf.technote import *
+# See the Documenteer docs for how to customize conf.py:
+# https://documenteer.lsst.io/technotes/
 
-rst_epilog = """
-
-.. |TS| replace:: Times Square
-
-.. _Jinja: https://jinja.palletsprojects.com/en/3.0.x/
-"""
-
-extensions.append("sphinx_diagrams")
+from documenteer.conf.technote import *  # noqa F401 F403
